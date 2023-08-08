@@ -1,28 +1,28 @@
-/* Kelei999999(WangLiang) all rights reserved.  You may use this software
- * and any derivatives exclusively with Kelei999999(WangLiang) products.
+/* Hunter.ORG all rights reserved.  You may use this software
+ * and any derivatives exclusively with Hunter.ORG products.
  *
- * THIS SOFTWARE IS SUPPLIED BY Kelei999999(WangLiang) "AS IS".  NO WARRANTIES, WHETHER
+ * THIS SOFTWARE IS SUPPLIED BY Hunter.ORG "AS IS".  NO WARRANTIES, WHETHER
  * EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
  * WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
- * PARTICULAR PURPOSE, OR ITS INTERACTION WITH Kelei999999(WangLiang) PRODUCTS, COMBINATION
+ * PARTICULAR PURPOSE, OR ITS INTERACTION WITH Hunter.ORG PRODUCTS, COMBINATION
  * WITH ANY OTHER PRODUCTS, OR USE IN ANY APPLICATION.
  *
- * IN NO EVENT WILL Kelei999999(WangLiang) BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
+ * IN NO EVENT WILL Hunter.ORG BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
  * INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
- * WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF Kelei999999(WangLiang) HAS
+ * WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF Hunter.ORG HAS
  * BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE
- * FULLEST EXTENT ALLOWED BY LAW, Kelei999999(WangLiang)'S TOTAL LIABILITY ON ALL CLAIMS
+ * FULLEST EXTENT ALLOWED BY LAW, Hunter.ORG'S TOTAL LIABILITY ON ALL CLAIMS
  * IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF
- * ANY, THAT YOU HAVE PAID DIRECTLY TO Kelei999999(WangLiang) FOR THIS SOFTWARE.
+ * ANY, THAT YOU HAVE PAID DIRECTLY TO Hunter.ORG FOR THIS SOFTWARE.
  *
- * Kelei999999(WangLiang) PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
+ * Hunter.ORG PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
  * TERMS.
  */
 
 /*
  * File: Hunter_OS_LDC.h
- * Author: Kelei999999(WangLiang)
- * Created on: 2014年5月12日
+ * Author: Hunter.ORG
+ * Created on: 2016年5月12日
  * Revision history: 2.0
  */
 
@@ -60,15 +60,15 @@
 #include "Typedef.h"
 //----------------------------------------------本地数据中心(LDC)框架参数定义
 #ifndef System_Parameter_LEN
-	#define System_Parameter_LEN			800
+	#define System_Parameter_LEN				800
 #endif
 #define 	system_parameter_DEFAULTS 			{RAW_SYSDATA,Lower_Limit,Upper_Limit,Defaults,Attribute_Words,Sign_Bit}
-#define		EEPROMINITCode				0x5555
-#define		EEPROMINITCode1				0xAAAAAAAA
-#define		EEPROMINITCode2				0x13572468
-#define		EEPROMINIT					(System_Parameter_LEN + 0)
-#define		EEPROMINIT1					(System_Parameter_LEN + 1)
-#define		EEPROMINIT2					(System_Parameter_LEN + 2)
+#define		EEPROMINITCode						0x5555
+#define		EEPROMINITCode1						0xAAAAAAAA
+#define		EEPROMINITCode2						0x13572468
+#define		EEPROMINIT							(System_Parameter_LEN + 0)
+#define		EEPROMINIT1							(System_Parameter_LEN + 1)
+#define		EEPROMINIT2							(System_Parameter_LEN + 2)
 /*
  * 	框架结构体数组指针
  */
@@ -93,13 +93,13 @@ struct csystem_parameter
 	const uint8 *attribute;			//属性(权限)
 	const uint8 *sign;				//符号指示
 };
+extern struct system_parameter SYS_Parameter;
 extern uint32 RAW_SYSDATA[System_Parameter_LEN];
 extern const uint32 Lower_Limit[System_Parameter_LEN];
 extern const uint32 Upper_Limit[System_Parameter_LEN];
 extern const uint32 Defaults[System_Parameter_LEN];
 extern const uint8 Attribute_Words[System_Parameter_LEN];
 extern const uint8 Sign_Bit[System_Parameter_LEN];
-extern struct system_parameter USER_Parameter;
 extern const uint16 CAN_Debug_ID;
 extern volatile uint16 CAN_DebugUser_ID;
 //----------------------------------------------

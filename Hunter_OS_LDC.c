@@ -1,28 +1,28 @@
-/* Kelei999999(WangLiang) all rights reserved.  You may use this software
- * and any derivatives exclusively with Kelei999999(WangLiang) products.
+/* Hunter.ORG all rights reserved.  You may use this software
+ * and any derivatives exclusively with Hunter.ORG products.
  *
- * THIS SOFTWARE IS SUPPLIED BY Kelei999999(WangLiang) "AS IS".  NO WARRANTIES, WHETHER
+ * THIS SOFTWARE IS SUPPLIED BY Hunter.ORG "AS IS".  NO WARRANTIES, WHETHER
  * EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
  * WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
- * PARTICULAR PURPOSE, OR ITS INTERACTION WITH Kelei999999(WangLiang) PRODUCTS, COMBINATION
+ * PARTICULAR PURPOSE, OR ITS INTERACTION WITH Hunter.ORG PRODUCTS, COMBINATION
  * WITH ANY OTHER PRODUCTS, OR USE IN ANY APPLICATION.
  *
- * IN NO EVENT WILL Kelei999999(WangLiang) BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
+ * IN NO EVENT WILL Hunter.ORG BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
  * INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
- * WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF Kelei999999(WangLiang) HAS
+ * WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF Hunter.ORG HAS
  * BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE
- * FULLEST EXTENT ALLOWED BY LAW, Kelei999999(WangLiang)'S TOTAL LIABILITY ON ALL CLAIMS
+ * FULLEST EXTENT ALLOWED BY LAW, Hunter.ORG'S TOTAL LIABILITY ON ALL CLAIMS
  * IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF
- * ANY, THAT YOU HAVE PAID DIRECTLY TO Kelei999999(WangLiang) FOR THIS SOFTWARE.
+ * ANY, THAT YOU HAVE PAID DIRECTLY TO Hunter.ORG FOR THIS SOFTWARE.
  *
- * Kelei999999(WangLiang) PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
+ * Hunter.ORG PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
  * TERMS.
  */
 
 /*
  * File: Hunter_OS_LDC.c
- * Author: Kelei999999(WangLiang)
- * Created on: 2014年5月12日
+ * Author: Hunter.ORG
+ * Created on: 2016年5月12日
  * Revision history: 2.0
  */
 
@@ -52,15 +52,14 @@ static void OS_Dummy(void){}
 static uint16 MyCrc16(uint8* array,uint16 length);
 static uint8 CRC8(uint8 *buf,uint16 len);
 static uint16 BCC(uint8 *data,uint8 length);
-static uint8 BCC_INV(uint8 *data,uint8 length);
-//STATIC int8 Judgment_Scope(uint16 address,uint32 Parameter);
 static int8 Parameter_Write(uint16 Member,uint8 Privilege,uint32 Value);
 static uint32 Parameter_Read(uint16 Member);
 static os_ldc_store Store_Write	= (os_ldc_store)OS_Dummy;			/*非易失性存储器写入程序*/
 static os_ldc_can_sent CAN_Debug_Sent = (os_ldc_can_sent)OS_Dummy;		/*CAN发送程序*/
 static os_ldc_uart_sent UART_Debug_Sent = (os_ldc_uart_sent)OS_Dummy;		/*UART发送程序*/
 extern uint16 USER_Parameter_LENG;
-static uint8 ID_Check_Yet = 0,ID_Check_Sucess = 0,ID_Check_Pass = 0;
+struct system_parameter USER_Parameter = system_parameter_DEFAULTS;
+static uint8 ID_Check_Sucess = 0;
 //static uint8 Respons_Code = 0;
 /****************************************************************************
  * @函数名		void (*Os_Debug_Init)(os_debug_store Store_srite,
@@ -281,35 +280,6 @@ real32 Parameter_temp;
 STATIC void UART_DSO(uint8 UART_node,real32 Parameter_1,real32 Parameter_2,real32 Parameter_3,real32 Parameter_4)
 {
 	uint32 Temp;
-//	UARTDEBUGDATA[0] = 0xAA;
-//	UARTDEBUGDATA[1] = 0x55;
-//	Parameter_temp = Parameter_1;
-//	Temp = *(uint32*)&Parameter_temp;
-//	UARTDEBUGDATA[2] = (Temp >> 24) & 0xff;
-//	UARTDEBUGDATA[3] = (Temp >> 16) & 0xff;
-//	UARTDEBUGDATA[4] = (Temp >> 8) & 0xff;
-//	UARTDEBUGDATA[5] = (Temp >> 0) & 0xff;
-//	Parameter_temp = Parameter_2;
-//	Temp = *(uint32*)&Parameter_temp;
-//	UARTDEBUGDATA[6] = (Temp >> 24) & 0xff;
-//	UARTDEBUGDATA[7] = (Temp >> 16) & 0xff;
-//	UARTDEBUGDATA[8] = (Temp >> 8) & 0xff;
-//	UARTDEBUGDATA[9] = (Temp >> 0) & 0xff;
-//	Parameter_temp = Parameter_3;
-//	Temp = *(uint32*)&Parameter_temp;
-//	UARTDEBUGDATA[10] = (Temp >> 24) & 0xff;
-//	UARTDEBUGDATA[11] = (Temp >> 16) & 0xff;
-//	UARTDEBUGDATA[12] = (Temp >> 8) & 0xff;
-//	UARTDEBUGDATA[13] = (Temp >> 0) & 0xff;
-//	Parameter_temp = Parameter_4;
-//	Temp = *(uint32*)&Parameter_temp;
-//	UARTDEBUGDATA[14] = (Temp >> 24) & 0xff;
-//	UARTDEBUGDATA[15] = (Temp >> 16) & 0xff;
-//	UARTDEBUGDATA[16] = (Temp >> 8) & 0xff;
-//	UARTDEBUGDATA[17] = (Temp >> 0) & 0xff;
-//	UARTDEBUGDATA[18] = BCC(UARTDEBUGDATA,18);
-//	UARTDEBUGDATA[19] = BCC_INV(UARTDEBUGDATA,18);
-
 	UARTDEBUGDATA[0] = 0xAA;
 	UARTDEBUGDATA[1] = 0x55;
 	Par_temp.Parameter_float = Parameter_1;
@@ -387,82 +357,6 @@ STATIC uint16 BCC(uint8 *data,uint8 length)
 	return (((uint16)BCC_out << 8) + ACC_out);
 }
 /*****************************************************************************
- * @函数名		uint8 BCC_INV(uint8 *data,uint8 length)
- *---------------------------------------------------------------------------
- * @描述		计算取反校验和
- *---------------------------------------------------------------------------
- * @输入		*data：要校验的数据
- *				length：要校验的数据的长度
- *----------------------------------------------------------------------------
- * @输出        无
- *----------------------------------------------------------------------------
- * @返回值		取反校验和
- *----------------------------------------------------------------------------
- * @日期		2017年5月9日
- *
- *****************************************************************************/
-STATIC uint8 BCC_INV(uint8 *data,uint8 length)
-{
-	uint8 out;//用于保存异或结果
-	uint8 i;
-	out=0x00;
-	for (i = 0;i < length;i ++)
-	{
-		out ^= ~data[i];
-	}
-	return out;
-}
-/*****************************************************************************
- * @函数名		int8 Judgment_Scope(uint16 address)
- *---------------------------------------------------------------------------
- * @描述		本协议上位机向下位机进行写操作时的参数范围判断函数
- *---------------------------------------------------------------------------
- * @输入		address：需要判定的地址
- *				Parameter：需要判定的数据
- *----------------------------------------------------------------------------
- * @输出        无
- *----------------------------------------------------------------------------
- * @返回值		state=0为正确，state=-5表示参数值范围不对，state=-2表示地址错误
- *----------------------------------------------------------------------------
- * @日期		2017年5月9日
- *
- *****************************************************************************/
-//#define Parameter_Write(Member,Privilege)		if(Privilege < Attribute_Words[Member]) RAW_SYSDATA[Member]
-/*
-STATIC int8 Judgment_Scope(uint16 address,uint32 Parameter)
-{
-	int8 state = 0;
-	if(address < System_Parameter_LEN)
-	{
-		if(1 == USER_Parameter.sign[address])//目标值为有符号
-		{
-			if(((int32)USER_Parameter.lower[address] <= (int32)Parameter) && ((int32)Parameter <= (int32)USER_Parameter.upper[address]))
-			{
-				state=0;
-			}
-			else
-			{
-				state=-5;
-			}
-		}
-		else//目标值为无符号
-		{
-			if((USER_Parameter.lower[address] <= Parameter)&&(Parameter <= USER_Parameter.upper[address]))
-			{
-				state=0;
-			}
-			else
-			{
-				state=-5;
-			}
-		}
-	}
-	else
-		state = -2;
-	return state;
-}
-*/
-/*****************************************************************************
  * @函数名		int8 Parameter_Write(uint16 Member,uint8 Privilege,uint32 Value)
  *---------------------------------------------------------------------------
  * @描述		本协议中对参数地址的写入行为
@@ -501,9 +395,9 @@ STATIC int8 Parameter_Write(uint16 Member,uint8 Privilege,uint32 Value)
 		{
 			if(((int32)Value >= (int32)USER_Parameter.lower[Member]) && ((int32)Value <= (int32)USER_Parameter.upper[Member]))
 			{
-				if(((Attribute_Words[Member] <= 3) && (Privilege >= Attribute_Words[Member])) || /*操作权限高于成员属性权限*/
-				   ((Attribute_Words[Member] <= 7) && (Privilege == 0xA1)) || /*超级管理员1权限*/
-				   ((Attribute_Words[Member] <= 11) && (Privilege == 0xA5)) || /*超级管理员2权限*/
+				if(((USER_Parameter.attribute[Member] <= 3) && (Privilege >= USER_Parameter.attribute[Member])) || /*操作权限高于成员属性权限*/
+				   ((USER_Parameter.attribute[Member] <= 7) && (Privilege == 0xA1)) || /*超级管理员1权限*/
+				   ((USER_Parameter.attribute[Member] <= 11) && (Privilege == 0xA5)) || /*超级管理员2权限*/
 				   (Privilege == 0xAB) /*超级管理员3权限*/
 				   )
 				{
@@ -512,7 +406,7 @@ STATIC int8 Parameter_Write(uint16 Member,uint8 Privilege,uint32 Value)
 					Store_Write(Member,USER_Parameter.value[Member]);
 					return 0;
 				}
-				else if((Attribute_Words[Member] <= 7) && (Privilege >= Attribute_Words[Member])) /*操作权限高于成员属性权限*/
+				else if((USER_Parameter.attribute[Member] <= 7) && (Privilege >= USER_Parameter.attribute[Member])) /*操作权限高于成员属性权限*/
 				{
 					USER_Parameter.value[Member] = Value;
 					return 0;
@@ -531,9 +425,9 @@ STATIC int8 Parameter_Write(uint16 Member,uint8 Privilege,uint32 Value)
 		{
 			if((Value >= USER_Parameter.lower[Member]) && (Value <= USER_Parameter.upper[Member]))
 			{
-				if(((Attribute_Words[Member] <= 3) && (Privilege >= Attribute_Words[Member])) || /*操作权限高于成员属性权限*/
-				   ((Attribute_Words[Member] <= 7) && (Privilege == 0xA1)) || /*超级管理员1权限*/
-				   ((Attribute_Words[Member] <= 11) && (Privilege == 0xA5)) || /*超级管理员2权限*/
+				if(((USER_Parameter.attribute[Member] <= 3) && (Privilege >= USER_Parameter.attribute[Member])) || /*操作权限高于成员属性权限*/
+				   ((USER_Parameter.attribute[Member] <= 7) && (Privilege == 0xA1)) || /*超级管理员1权限*/
+				   ((USER_Parameter.attribute[Member] <= 11) && (Privilege == 0xA5)) || /*超级管理员2权限*/
 				   (Privilege == 0xAB) /*超级管理员3权限*/
 				   )
 				{
@@ -542,7 +436,7 @@ STATIC int8 Parameter_Write(uint16 Member,uint8 Privilege,uint32 Value)
 					Store_Write(Member,USER_Parameter.value[Member]);
 					return 0;
 				}
-				else if((Attribute_Words[Member] <= 7) && (Privilege >= Attribute_Words[Member])) /*操作权限高于成员属性权限*/
+				else if((USER_Parameter.attribute[Member] <= 7) && (Privilege >= USER_Parameter.attribute[Member])) /*操作权限高于成员属性权限*/
 				{
 					USER_Parameter.value[Member] = Value;
 					return 0;
